@@ -4,7 +4,7 @@ import com.linkedin.taskmanager.model.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -72,5 +72,21 @@ public class TaskRepositoryTest {
         // Assert
         assertTrue(foundTask.isPresent());
         assertEquals("Task 1", foundTask.get().getTitle());
+    }
+
+    @Test
+    public void testUpdateTask() {
+        // Arrange
+        Task task = new Task("Old Task", "To Do");
+        Task savedTask = taskRepository.save(task);
+
+        // Act
+        savedTask.setTitle("Updated Task");
+        savedTask.setStatus("In Progress");
+        Task updatedTask = taskRepository.save(savedTask);
+
+        // Assert
+        assertEquals("Updated Task", updatedTask.getTitle());
+        assertEquals("In Progress", updatedTask.getStatus());
     }
 }
